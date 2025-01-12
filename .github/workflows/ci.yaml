@@ -17,11 +17,15 @@ jobs:
             matrix:
                 php:
                     - '8.2'
+                    - '8.3'
+                include:
+                    - php: '8.4'
+                      env: 'PHP_CS_FIXER_IGNORE_ENV=1'
                 dependencies: ['highest']
             fail-fast: false
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -40,6 +44,8 @@ jobs:
             matrix:
                 php:
                     - '8.2'
+                    - '8.3'
+                    - '8.4'
                 dependencies: ['highest', 'lowest']
                 symfony:
                     - 'unchanged'
@@ -59,7 +65,7 @@ jobs:
                     MYSQL_ROOT_PASSWORD: password
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
 
             -   name: Configure Symfony version
                 if: matrix.symfony != 'unchanged'
@@ -72,7 +78,7 @@ jobs:
                     tools: composer, flex
 
             -   name: Install Composer dependencies (${{ matrix.dependencies }})
-                uses: ramsey/composer-install@v1
+                uses: ramsey/composer-install@v3
                 with:
                     dependency-versions: ${{ matrix.dependencies }}
                     composer-options: "--prefer-dist"
